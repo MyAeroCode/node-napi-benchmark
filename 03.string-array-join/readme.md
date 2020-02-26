@@ -20,12 +20,13 @@
 
 ```cpp
 string join(vector<string> arr, string separator){
-    stringstream ss;
+    string joined;
     size_t arrlen = arr.size();
     for(size_t i=0; i<arrlen; i++){
-        ss << arr[i] << separator;
+        joined.append(arr[i]);
+        joined.append(separator);
     }
-    return ss.str();
+    return joined;
 }
 ```
 
@@ -46,11 +47,12 @@ Napi::String join(const Napi::CallbackInfo& info)
 
     //
     // Append to string-stream.
-    std::stringstream ss;
+    std::string joined;
     uint32_t arrlen = arr.Length();
     for (uint32_t i = 0; i < arrlen; i++) {
-        Napi::String str = arr.Get(i).As<Napi::String>();
-        ss << str.Utf8Value() << separator;
+        std::string str = strarr.Get(i).As<Napi::String>().Utf8Value();
+        joined.append(str);
+        joined.append(separator);
     }
 
     //
@@ -67,7 +69,7 @@ function join_v1(arr: string[], separator: string): string {
 }
 ```
 
-**Node using str += str :**
+**Node using str += word :**
 
 ```ts
 function join_v2(arr: string[], separator: string): string {
@@ -84,3 +86,40 @@ function join_v2(arr: string[], separator: string): string {
 ### Benchmark
 
 ![](./images/benchmark.png)
+
+---
+
+### Why c++ is slower than node?
+
+Let's think of another function.
+This function casts the data received as a string and does nothing.
+
+```cpp
+Napi::String nothing(const Napi::CallbackInfo& info)
+{
+    Napi::Env env = info.Env();
+
+    //
+    // Get first argument as Array.
+    Napi::Array strarr = info[0].As<Napi::Array>();
+
+    //
+    // Get second argument as string.
+    std::string separator = info[1].ToString().Utf8Value();
+
+    //
+    // Just read each word.
+    uint32_t arrlen = strarr.Length();
+    for (uint32_t i = 0; i < arrlen; i++) {
+        std::string str = strarr.Get(i).As<Napi::String>().Utf8Value();
+    }
+
+    //
+    // Return as String.
+    return Napi::String::New(env, "nothing");
+}
+```
+
+![](./images/benchmark2.png)
+
+The overhead occurred in reading a lot of data.

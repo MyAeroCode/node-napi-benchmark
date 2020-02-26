@@ -7,6 +7,7 @@ require("module-alias/register");
  */
 interface MyModule {
     join: (strarr: string[], separator: string) => string;
+    nothing: (strarr: string[], separator: string) => string;
 }
 const myModule: MyModule = require("@addon/my-addon.node");
 
@@ -21,10 +22,17 @@ function getExecutionTime(func: () => any): number {
 }
 
 /**
- * addon version function.
+ * addon version function. myModule.join()
  */
-function function_addon(strarr: string[], separator: string): string {
+function function_addon_v1(strarr: string[], separator: string): string {
     return myModule.join(strarr, separator);
+}
+
+/**
+ * addon version function. myModule.nothing()
+ */
+function function_addon_v2(strarr: string[], separator: string): string {
+    return myModule.nothing(strarr, separator);
 }
 
 /**
@@ -48,7 +56,7 @@ function function_node_v2(strarr: string[], separator: string): string {
 /**
  * benchmark function.
  */
-export function benchmark(n: number, repeat: number) {
+function benchmark1(n: number, repeat: number) {
     let avg_time_addon = 0;
     let avg_time_node1 = 0;
     let avg_time_node2 = 0;
@@ -59,7 +67,7 @@ export function benchmark(n: number, repeat: number) {
         strarr.push(String(i));
     }
 
-    for (let i = 0; i < repeat; i++) avg_time_addon += getExecutionTime(() => function_addon(strarr, separator));
+    for (let i = 0; i < repeat; i++) avg_time_addon += getExecutionTime(() => function_addon_v1(strarr, separator));
     for (let i = 0; i < repeat; i++) avg_time_node1 += getExecutionTime(() => function_node_v1(strarr, separator));
     for (let i = 0; i < repeat; i++) avg_time_node2 += getExecutionTime(() => function_node_v2(strarr, separator));
 
@@ -70,7 +78,30 @@ export function benchmark(n: number, repeat: number) {
     console.log(`node2 : ${avg_time_node2 / repeat} ms`);
 }
 
+/**
+ * benchmark function.
+ */
+function benchmark2(n: number, repeat: number) {
+    let avg_time_addon1 = 0;
+    let avg_time_addon2 = 0;
+
+    let separator: string = String(n);
+    let strarr: string[] = [];
+    for (let i = 0; i < n; i++) {
+        strarr.push(String(i));
+    }
+
+    for (let i = 0; i < repeat; i++) avg_time_addon1 += getExecutionTime(() => function_addon_v1(strarr, separator));
+    for (let i = 0; i < repeat; i++) avg_time_addon2 += getExecutionTime(() => function_addon_v2(strarr, separator));
+
+    console.log("----------------------------------");
+    console.log(`n: ${n}, repeat: ${repeat}`);
+    console.log(`addon1 : ${avg_time_addon1 / repeat} ms`);
+    console.log(`addon2 : ${avg_time_addon2 / repeat} ms`);
+}
+
 //
 // start benchmark.
 let testcase = [3, 4, 5].map((n) => Math.pow(10, n));
-testcase.forEach((n) => benchmark(n, 1000));
+testcase.forEach((n) => benchmark1(n, 1000));
+testcase.forEach((n) => benchmark2(n, 1000));
