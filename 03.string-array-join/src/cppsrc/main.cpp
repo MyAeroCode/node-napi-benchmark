@@ -7,21 +7,20 @@ Napi::String join(const Napi::CallbackInfo& info)
     Napi::Env env = info.Env();
 
     //
-    // Get first argument as Array.
-    Napi::Array strarr = info[0].As<Napi::Array>();
+    // Get first argument as Object.
+    Napi::Object obj = info[0].As<Napi::Object>();
 
     //
-    // Get second argument as string.
-    std::string separator = info[1].ToString().Utf8Value();
+    // Parse arguments from object.
+    Napi::Array strarr = obj.Get("strarr").As<Napi::Array>();
 
     //
     // Append to string.
     std::string joined;
     uint32_t arrlen = strarr.Length();
     for (uint32_t i = 0; i < arrlen; i++) {
-        std::string str = strarr.Get(i).As<Napi::String>().Utf8Value();
-        joined.append(str);
-        joined.append(separator);
+        std::string word = strarr.Get(i).As<Napi::String>().Utf8Value();
+        joined += word;
     }
 
     //
@@ -34,23 +33,25 @@ Napi::String nothing(const Napi::CallbackInfo& info)
     Napi::Env env = info.Env();
 
     //
-    // Get first argument as Array.
-    Napi::Array strarr = info[0].As<Napi::Array>();
+    // Get first argument as Object.
+    Napi::Object obj = info[0].As<Napi::Object>();
 
     //
-    // Get second argument as string.
-    std::string separator = info[1].ToString().Utf8Value();
+    // Parse arguments from object.
+    Napi::Array strarr = obj.Get("strarr").As<Napi::Array>();
 
     //
-    // Just read each word.
+    // Append to string.
+    std::string joined;
     uint32_t arrlen = strarr.Length();
     for (uint32_t i = 0; i < arrlen; i++) {
-        std::string str = strarr.Get(i).As<Napi::String>().Utf8Value();
+        std::string word = strarr.Get(i).As<Napi::String>().Utf8Value();
+        //
     }
 
     //
     // Return as String.
-    return Napi::String::New(env, "nothing");
+    return Napi::String::New(env, joined);
 }
 
 Napi::Object InitAll(Napi::Env env, Napi::Object exports)

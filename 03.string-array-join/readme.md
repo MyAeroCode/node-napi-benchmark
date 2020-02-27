@@ -19,12 +19,11 @@
 **Addon :**
 
 ```cpp
-string join(vector<string> arr, string separator){
+string joinByConcat(vector<string> arr){
     string joined;
     size_t arrlen = arr.size();
     for(size_t i=0; i<arrlen; i++){
-        joined.append(arr[i]);
-        joined.append(separator);
+        joined += arr[i];
     }
     return joined;
 }
@@ -33,51 +32,72 @@ string join(vector<string> arr, string separator){
 **Addon implemation :**
 
 ```cpp
-Napi::String join(const Napi::CallbackInfo& info)
+Napi::String joinByConcat(const Napi::CallbackInfo& info)
 {
     Napi::Env env = info.Env();
 
     //
-    // Get first argument as Array.
-    Napi::Array arr = info[0].As<Napi::Array>();
+    // Get first argument as Object.
+    Napi::Object obj = info[0].As<Napi::Object>();
 
     //
-    // Get second argument as string.
-    std::string separator = info[1].ToString().Utf8Value();
+    // Parse arguments from object.
+    Napi::Array strarr = obj.Get("strarr").As<Napi::Array>();
 
     //
-    // Append to string-stream.
+    // Append to string.
     std::string joined;
-    uint32_t arrlen = arr.Length();
+    uint32_t arrlen = strarr.Length();
     for (uint32_t i = 0; i < arrlen; i++) {
         std::string str = strarr.Get(i).As<Napi::String>().Utf8Value();
-        joined.append(str);
-        joined.append(separator);
+        joined += str;
     }
 
     //
     // Return as String.
-    return Napi::String::New(env, ss.str());
+    return Napi::String::New(env, joined);
 }
 ```
 
-**Node using array.join() :**
+**Comparative function :**
 
-```ts
-function join_v1(arr: string[], separator: string): string {
-    return arr.join(separator);
+```cpp
+Napi::String nothing(const Napi::CallbackInfo& info)
+{
+    ...
+
+    //
+    // Just read data, then nothing.
+    std::string joined;
+    uint32_t arrlen = strarr.Length();
+    for (uint32_t i = 0; i < arrlen; i++) {
+        std::string str = strarr.Get(i).As<Napi::String>().Utf8Value();
+        // joined += str;
+    }
+
+    //
+    // Return as String.
+    return Napi::String::New(env, joined);
 }
 ```
 
 **Node using str += word :**
 
 ```ts
-function join_v2(arr: string[], separator: string): string {
+function joinByConcat(arr: string[]): string {
     let joined = "";
     for (let i = 0; i < arr.length; i++) {
-        joined += arr[i] + separator;
+        joined += arr[i];
     }
     return joined;
+}
+```
+
+**Node using array.join() :**
+
+```ts
+function joinByJoin(arr: string[]): string {
+    return arr.join();
 }
 ```
 
@@ -85,41 +105,17 @@ function join_v2(arr: string[], separator: string): string {
 
 ### Benchmark
 
-![](./images/benchmark.png)
-
----
-
-### Why c++ is slower than node?
-
-Let's think of another function.
-This function casts the data received as a string and does nothing.
-
-```cpp
-Napi::String nothing(const Napi::CallbackInfo& info)
-{
-    Napi::Env env = info.Env();
-
-    //
-    // Get first argument as Array.
-    Napi::Array strarr = info[0].As<Napi::Array>();
-
-    //
-    // Get second argument as string.
-    std::string separator = info[1].ToString().Utf8Value();
-
-    //
-    // Just read each word.
-    uint32_t arrlen = strarr.Length();
-    for (uint32_t i = 0; i < arrlen; i++) {
-        std::string str = strarr.Get(i).As<Napi::String>().Utf8Value();
+```ts
+function createStringArray(wordCnt: number, wordLen: number): string[] {
+    const strarr: string[] = [];
+    for (let i = 0; i < wordCnt; i++) {
+        const word: string = "-".repeat(wordLen);
+        strarr.push(word);
     }
-
-    //
-    // Return as String.
-    return Napi::String::New(env, "nothing");
+    return strarr;
 }
 ```
 
-![](./images/benchmark2.png)
-
-The overhead occurred in reading a lot of data.
+![](./images/benchmark_wordlen_10.png)
+![](./images/benchmark_wordlen_1000.png)
+![](./images/benchmark_wordlen_999999.png)
