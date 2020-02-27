@@ -70,6 +70,8 @@ Napi::Number reduce_v1(const Napi::CallbackInfo& info)
 ```
 
 ```cpp
+//
+// if arr = [0, 1, 2, ..., N]
 Napi::Number reduce_v2(const Napi::CallbackInfo& info)
 {
     Napi::Env env = info.Env();
