@@ -90,6 +90,8 @@ function sort({ numarr }) {
 
 ### Benchmark
 
+> Measure the average of 10,000 times.
+
 ![](./resource/benchmark.png)
 
 Clearly, `NAPI` is slower than `NODE`.
@@ -100,6 +102,8 @@ Let's take a closer look at why this happens.
 ---
 
 ### Benchmark-Detail
+
+> Measure the average of 10,000 times.
 
 ![](./resource/benchmark-detail.png)
 
