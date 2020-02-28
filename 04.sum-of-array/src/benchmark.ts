@@ -65,14 +65,18 @@ export function benchmark<T>(targets: BenchmarkTarget<T>[], arg: AddonParamType,
         //
         // Print result.
         let etc = totalExecutionTime / repeat / 1e3;
+        let subCnt = 0;
         console.log(`[${target.name}] ${etc} us`);
         console.group();
         for (const key in statics) {
             const thisPhaseExecutionTime = statics[key] / repeat / 1e3;
             etc -= thisPhaseExecutionTime;
+            subCnt++;
             console.log(`> ${key} : ${thisPhaseExecutionTime} us`);
         }
-        console.log(`> etc : ${etc} us`);
+        if (subCnt !== 0) {
+            console.log(`> etc : ${etc} us`);
+        }
         console.groupEnd();
     }
     console.groupEnd();
