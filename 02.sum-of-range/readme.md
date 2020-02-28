@@ -75,10 +75,14 @@ function getSumOfRange({ end }) {
 
 ### Benchmark
 
+> Measure the average of 10,000 times.
+
 ![](./resource/benchmark.png)
 
 ---
 
 ### Benchmark-Detail
+
+> Measure the average of 10,000 times.
 
 ![](./resource/benchmark-detail.png)

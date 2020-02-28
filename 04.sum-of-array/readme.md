@@ -85,6 +85,8 @@ function getSumOfArray({ numarr }) {
 
 ### Benchmark
 
+> Measure the average of 10,000 times.
+
 ![](./resource/benchmark.png)
 
 The `NODE` seems slower than the `NAPI`, but in fact there is a trick.
@@ -92,6 +94,8 @@ The `NODE` seems slower than the `NAPI`, but in fact there is a trick.
 ---
 
 ### Benchmark-Detail
+
+> Measure the average of 10,000 times.
 
 ![](./resource/benchmark-detail.png)
 

@@ -98,6 +98,8 @@ function joinStringArrayByArrJoin({ strarr }) {
 
 ### Benchmark
 
+> Measure the average of 10,000 times.
+
 > When each word is **short** _(1 <= length <= 100)_, but **numerous**.
 
 ![](./resource/benchmark-ms.png)
@@ -106,11 +108,17 @@ function joinStringArrayByArrJoin({ strarr }) {
 
 ### Benchmark-Detail
 
+> Measure the average of 10,000 times.
+
+> When each word is **short** _(1 <= length <= 100)_, but **numerous**.
+
 ![](./resource/benchmark-ms-detail.png)
 
 ---
 
 ### Benchmark
+
+> Measure the average of 10,000 times.
 
 > When each word is **long** _(100,000 <= length <= 200,000)_, but **small in number**.
 
@@ -119,5 +127,9 @@ function joinStringArrayByArrJoin({ strarr }) {
 ---
 
 ### Benchmark-Detail
+
+> Measure the average of 10,000 times.
+
+> When each word is **long** _(100,000 <= length <= 200,000)_, but **small in number**.
 
 ![](./resource/benchmark-fb-detail.png)
