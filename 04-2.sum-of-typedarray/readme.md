@@ -46,20 +46,12 @@ function getSumOfArray({ numarr }) {
 
 ---
 
-### Benchmark - NAPI side
+### Benchmark
 
 > Measure the average of 10,000 times.
 
-![](./resource/benchmark-napi.png)
+![](./resource/benchmark.png)
 
 The time to read data has been significantly reduced.
 
----
-
-### Benchmark - NODE side
-
-> Measure the average of 10,000 times.
-
-![](./resource/benchmark-node.png)
-
-Access to `BigInt64Array` and conversion to `number` causes overhead.
+But access to `BigInt64Array` and conversion to `number` causes overhead in `NODE_64[]`.
