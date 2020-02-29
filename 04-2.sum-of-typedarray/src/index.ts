@@ -12,7 +12,7 @@ const targets: BenchmarkTarget<AddonReturnType>[] = [
         func: function getSumOfArray({ numarr }) {
             let sum: number = 0;
             for (let i = 0; i < numarr.length; i++) {
-                sum += Number(numarr[i]);
+                sum += numarr[i]; // or Number(numarr[i]);
             }
             return {
                 ans: sum,
@@ -26,9 +26,9 @@ const targets: BenchmarkTarget<AddonReturnType>[] = [
 //
 // define TestCase supplier.
 function createParam(N: number): AddonParamType {
-    const arr = new BigUint64Array(N);
+    const arr = new Int32Array(N); // or new BigInt64Array(N);
     for (let i = 0; i < N; i++) {
-        arr[i] = BigInt(i);
+        arr[i] = i;
     }
     return {
         numarr: arr
@@ -37,7 +37,7 @@ function createParam(N: number): AddonParamType {
 
 //
 // start benchmark.
-const strcnt = [6].map((n) => Math.pow(10, n));
+const strcnt = [4, 5, 6].map((n) => Math.pow(10, n));
 const repeat = 10000;
 strcnt.forEach((n) => {
     const param = createParam(n);

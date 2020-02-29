@@ -8,28 +8,12 @@ Napi::Object getSumOfArray(const Napi::CallbackInfo& info)
 {
     std::vector<std::chrono::steady_clock::time_point> time;
 
-    /* ------------------------------------
-     *  Section : read data.
-     * ------------------------------------ */
-    time.push_back(std::chrono::high_resolution_clock::now());
-
     //
     // get argument.
     auto env = info.Env();
     auto obj = info[0].As<Napi::Object>();
-    auto numarr = obj.Get("numarr").As<Napi::TypedArrayOf<uint64_t>>();
-
-    //
-    // assign argument to vector.
-    uint32_t arrlen = numarr.ElementLength();
-
-    std::vector<int64_t> vec;
-    vec.reserve(arrlen);
-    for (uint32_t i = 0; i < arrlen; i++) {
-        auto num = numarr[i];
-        vec.push_back(num);
-    }
-    time.push_back(std::chrono::high_resolution_clock::now());
+    auto numarr = obj.Get("numarr").As<Napi::TypedArrayOf<int32_t>>(); // or As<Napi::TypedArrayOf<int64_t>>()
+    auto arrlen = numarr.ElementLength();
 
     /* ------------------------------------
      *  Section : calc sum of array.
@@ -37,7 +21,7 @@ Napi::Object getSumOfArray(const Napi::CallbackInfo& info)
     time.push_back(std::chrono::high_resolution_clock::now());
     int64_t sum = 0;
     for (uint32_t i = 0; i < arrlen; i++) {
-        sum += vec[i];
+        sum += numarr[i];
     }
     time.push_back(std::chrono::high_resolution_clock::now());
 
@@ -47,8 +31,7 @@ Napi::Object getSumOfArray(const Napi::CallbackInfo& info)
     auto statics = Napi::Object::New(env);
     ans["ans"] = Napi::Number::New(env, sum);
     ans["statics"] = statics;
-    statics["read data"] = std::chrono::duration_cast<std::chrono::nanoseconds>(time[1] - time[0]).count();
-    statics["calc sum of array"] = std::chrono::duration_cast<std::chrono::nanoseconds>(time[3] - time[2]).count();
+    statics["calc sum of array"] = std::chrono::duration_cast<std::chrono::nanoseconds>(time[1] - time[0]).count();
     return ans;
 }
 

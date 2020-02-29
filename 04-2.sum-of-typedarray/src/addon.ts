@@ -9,7 +9,7 @@ require("module-alias/register");
  * define paramType of function.
  */
 export type AddonParamType = {
-    numarr: BigUint64Array;
+    numarr: Int32Array; // or BigInt64Array
 };
 
 /**

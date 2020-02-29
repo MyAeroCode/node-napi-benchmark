@@ -58,10 +58,10 @@ export function benchmark<T>(targets: BenchmarkTarget<T>[], arg: AddonParamType,
             //
             // verifies the results.
             if (ans === undefined) ans = thisTestOutput!!.ans;
-            // if (ans !== thisTestOutput!!.ans) {
-            //     console.error(`Test Fail`, ans, thisTestOutput!!.ans);
-            //     throw new Error(`Test Fail.`);
-            // }
+            if (ans !== thisTestOutput!!.ans) {
+                console.error(`Test Fail`, ans, thisTestOutput!!.ans);
+                throw new Error(`Test Fail.`);
+            }
 
             //
             // get internal time information.
