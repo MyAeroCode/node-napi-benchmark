@@ -27,7 +27,7 @@ function fibo(n: number): number {
 
 ---
 
-### Benchmark back - Memory O(n)
+### Benchmark
 
 > Measure the average of 10,000 times.
 
