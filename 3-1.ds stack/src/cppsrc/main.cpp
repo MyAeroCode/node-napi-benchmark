@@ -12,22 +12,15 @@ Napi::Object testStack1(const Napi::CallbackInfo& info)
     // get argument.
     auto env = info.Env();
     auto obj = info[0].As<Napi::Object>();
-    auto input = obj.Get("input").As<Napi::TypedArrayOf<int32_t>>();
-    auto inputSize = input.ElementLength();
+    auto N = obj.Get("N").ToNumber().Int32Value();
     std::stack<int32_t> s;
 
     //
     // simulate.
     time.push_back(std::chrono::high_resolution_clock::now());
-    for (auto i = 0; i < inputSize; i++) {
-        auto thisNum = input[i];
-        if (thisNum < 0) {
-            if (!s.empty())
-                s.pop();
-        }
-        else {
-            s.push(thisNum);
-        }
+    for (auto i = 0; i < N; i++) {
+        s.push(i);
+        s.pop();
     }
     time.push_back(std::chrono::high_resolution_clock::now());
 
@@ -35,13 +28,9 @@ Napi::Object testStack1(const Napi::CallbackInfo& info)
     // return null.
     auto ans = Napi::Object::New(env);
     auto statics = Napi::Object::New(env);
-    if (s.empty())
-        ans["ans"] = env.Undefined();
-    else
-        ans["ans"] = s.top();
+    ans["ans"] = env.Undefined();
     ans["statics"] = statics;
     statics["calc"] = std::chrono::duration_cast<std::chrono::nanoseconds>(time[1] - time[0]).count();
-
     return ans;
 }
 
@@ -53,22 +42,16 @@ Napi::Object testStack2(const Napi::CallbackInfo& info)
     // get argument.
     auto env = info.Env();
     auto obj = info[0].As<Napi::Object>();
-    auto input = obj.Get("input").As<Napi::TypedArrayOf<int32_t>>();
-    auto inputSize = input.ElementLength();
-    auto stack = new int32_t[inputSize];
+    auto N = obj.Get("N").ToNumber().Int32Value();
+    auto stack = new int32_t[N];
     auto cursor = 0;
 
     //
     // simulate.
     time.push_back(std::chrono::high_resolution_clock::now());
-    for (auto i = 0; i < inputSize; i++) {
-        auto thisNum = input[i];
-        if (thisNum < 0) {
-            cursor = (cursor == 0) ? 0 : cursor - 1;
-        }
-        else {
-            stack[cursor++] = thisNum;
-        }
+    for (auto i = 0; i < N; i++) {
+        stack[cursor++] = i;
+        --cursor;
     }
     time.push_back(std::chrono::high_resolution_clock::now());
 
@@ -76,17 +59,13 @@ Napi::Object testStack2(const Napi::CallbackInfo& info)
     // return null.
     auto ans = Napi::Object::New(env);
     auto statics = Napi::Object::New(env);
-    if (cursor)
-        ans["ans"] = stack[cursor - 1];
-    else
-        ans["ans"] = env.Undefined();
+    ans["ans"] = env.Undefined();
     ans["statics"] = statics;
     statics["calc"] = std::chrono::duration_cast<std::chrono::nanoseconds>(time[1] - time[0]).count();
 
     //
     // free memory.
     delete stack;
-
     return ans;
 }
 

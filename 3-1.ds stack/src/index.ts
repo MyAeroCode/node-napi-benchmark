@@ -13,14 +13,12 @@ const targets: BenchmarkTargetGroup = [
         name: "napi/ds-arr-stack"
     },
     {
-        func: function testStackTrr({ input }) {
-            const len = input.length;
-            const stack = new Int32Array(len);
+        func: function testStackTrr({ N }) {
+            const stack = new Int32Array(N);
             let cur = 0;
-            for (let i = 0; i < len; i++) {
-                const thisNum = input[i];
-                if (thisNum < 0) cur = cur === 0 ? 0 : cur - 1;
-                else stack[cur++] = thisNum;
+            for (let i = 0; i < N; i++) {
+                stack[cur++] = i;
+                --cur;
             }
             return {
                 ans: cur === 0 ? undefined : stack[cur - 1],
@@ -30,13 +28,11 @@ const targets: BenchmarkTargetGroup = [
         name: "node/ds-test-stack-arr"
     },
     {
-        func: function testStackArr({ input }) {
-            const len = input.length;
+        func: function testStackArr({ N }) {
             const stack = [];
-            for (let i = 0; i < len; i++) {
-                const thisNum = input[i];
-                if (thisNum < 0) stack.pop();
-                else stack.push(thisNum);
+            for (let i = 0; i < N; i++) {
+                stack.push(N);
+                stack.pop();
             }
             return {
                 ans: stack.pop(),
@@ -50,13 +46,8 @@ const targets: BenchmarkTargetGroup = [
 //
 // define TestCase supplier.
 function createParam(N: number): AddonParamType {
-    const input = new Int32Array(N);
-    for (let i = 0; i < N; i++) {
-        const num = Math.floor(Math.random() * 1e3);
-        input[i] = num < 200 ? -1 : num;
-    }
     return {
-        input
+        N
     };
 }
 

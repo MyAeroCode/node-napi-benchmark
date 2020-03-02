@@ -9,15 +9,15 @@ require("module-alias/register");
  * define paramType of function.
  */
 export type AddonParamType = {
-    input: Int32Array;
+    N: number;
 };
 
 /**
  * declare Addon Module Interface.
  */
 interface AddonModuleInterface {
-    testStack1: (param: AddonParamType) => BenchmarkTargetFunctionReturn<number>;
-    testStack2: (param: AddonParamType) => BenchmarkTargetFunctionReturn<number>;
+    testStack1: (param: AddonParamType) => BenchmarkTargetFunctionReturn<undefined>;
+    testStack2: (param: AddonParamType) => BenchmarkTargetFunctionReturn<undefined>;
 }
 
 /**

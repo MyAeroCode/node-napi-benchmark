@@ -14,12 +14,6 @@
 
 ### DataStructure Stack
 
-Given an array of `positive integers` or `-1`.
-
-Search from the beginning in order, putting a `positive integer` on the stack or subtracting one from the stack if `-1`.
-
-At last returns the `top()` of the stack, or `undefined` if empty.
-
 **Addon :**
 
 ```cpp
@@ -42,7 +36,7 @@ Napi::Object testStack2(const Napi::CallbackInfo& info)
 
     //
     // use array-stack.
-    int32_t *stack = new int32_t[len];
+    int32_t *stack = new int32_t[N];
     int32_t cursor = 0;
 
     ...
@@ -58,7 +52,7 @@ Napi::Object testStack2(const Napi::CallbackInfo& info)
 **Node :**
 
 ```ts
-function testStackArr({ input }) {
+function testStackArr({ N }) {
     //
     // use array.
     const stack :number[] = [];
@@ -68,10 +62,10 @@ function testStackArr({ input }) {
 ```
 
 ```ts
-function testStackTrr({ input }) {
+function testStackTrr({ N }) {
     //
     // use typed-array stack.
-    const stack = new Int32Array(input.length);
+    const stack = new Int32Array(N);
     let cursor = 0;
 
     ...
@@ -80,8 +74,40 @@ function testStackTrr({ input }) {
 
 ---
 
-### Benchmark
+### Benchmark - Memory O(n)
 
 > Measure the average of 10,000 times.
 
-![](./resource/benchmark.png)
+```ts
+//
+// Memory complexity O(N)
+for (let i = 0; i < N; i++) stack.push(i);
+for (let i = 0; i < N; i++) stack.pop();
+```
+
+![](./resource/benchmark-on.png)
+
+---
+
+### Benchmark - Memory O(1)
+
+> Measure the average of 10,000 times.
+
+```ts
+//
+// Memory complexity O(1)
+for (let i = 0; i < N; i++) {
+    stack.push(i);
+    stack.pop();
+}
+```
+
+![](./resource/benchmark-o1.png)
+
+---
+
+The above performance seems to be influenced by the following factors:
+
+1. capacity expansion (especially `std::stack`)
+
+2. performance of `push()` / `pop()` itself
