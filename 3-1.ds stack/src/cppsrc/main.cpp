@@ -1,3 +1,4 @@
+#include "./mystack.cpp"
 #include <chrono>
 #include <napi.h>
 #include <sstream>
@@ -20,6 +21,8 @@ Napi::Object testStack1(const Napi::CallbackInfo& info)
     time.push_back(std::chrono::high_resolution_clock::now());
     for (auto i = 0; i < N; i++) {
         s.push(i);
+    }
+    for (auto i = 0; i < N; i++) {
         s.pop();
     }
     time.push_back(std::chrono::high_resolution_clock::now());
@@ -28,7 +31,10 @@ Napi::Object testStack1(const Napi::CallbackInfo& info)
     // return null.
     auto ans = Napi::Object::New(env);
     auto statics = Napi::Object::New(env);
-    ans["ans"] = env.Undefined();
+    if (s.empty())
+        ans["ans"] = env.Undefined();
+    else
+        ans["ans"] = s.top();
     ans["statics"] = statics;
     statics["calc"] = std::chrono::duration_cast<std::chrono::nanoseconds>(time[1] - time[0]).count();
     return ans;
@@ -43,15 +49,16 @@ Napi::Object testStack2(const Napi::CallbackInfo& info)
     auto env = info.Env();
     auto obj = info[0].As<Napi::Object>();
     auto N = obj.Get("N").ToNumber().Int32Value();
-    auto stack = new int32_t[N];
-    auto cursor = 0;
+    MyStack<int32_t> s(N);
 
     //
     // simulate.
     time.push_back(std::chrono::high_resolution_clock::now());
     for (auto i = 0; i < N; i++) {
-        stack[cursor++] = i;
-        --cursor;
+        s.push(i);
+    }
+    for (auto i = 0; i < N; i++) {
+        s.pop();
     }
     time.push_back(std::chrono::high_resolution_clock::now());
 
@@ -59,13 +66,13 @@ Napi::Object testStack2(const Napi::CallbackInfo& info)
     // return null.
     auto ans = Napi::Object::New(env);
     auto statics = Napi::Object::New(env);
-    ans["ans"] = env.Undefined();
+    if (s.isEmpty())
+        ans["ans"] = env.Undefined();
+    else
+        ans["ans"] = s.top();
     ans["statics"] = statics;
     statics["calc"] = std::chrono::duration_cast<std::chrono::nanoseconds>(time[1] - time[0]).count();
 
-    //
-    // free memory.
-    delete stack;
     return ans;
 }
 

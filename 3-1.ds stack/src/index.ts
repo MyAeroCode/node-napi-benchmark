@@ -1,5 +1,6 @@
 import { benchmark, BenchmarkTargetGroup } from "./benchmark";
 import { addon, AddonParamType } from "./addon";
+import { MyStack } from "./mystack";
 
 //
 // define BenchmarkTarget.
@@ -10,28 +11,31 @@ const targets: BenchmarkTargetGroup = [
     },
     {
         func: addon.testStack2,
-        name: "napi/ds-arr-stack"
+        name: "napi/ds-my-stack"
     },
     {
         func: function testStackTrr({ N }) {
-            const stack = new Int32Array(N);
-            let cur = 0;
+            const stack = new MyStack(Int32Array, N);
             for (let i = 0; i < N; i++) {
-                stack[cur++] = i;
-                --cur;
+                stack.push(N);
+            }
+            for (let i = 0; i < N; i++) {
+                stack.pop();
             }
             return {
-                ans: cur === 0 ? undefined : stack[cur - 1],
+                ans: stack.isEmpty() ? undefined : stack.top(),
                 statics: {}
             };
         },
-        name: "node/ds-test-stack-arr"
+        name: "node/ds-my-stack"
     },
     {
         func: function testStackArr({ N }) {
             const stack = [];
             for (let i = 0; i < N; i++) {
                 stack.push(N);
+            }
+            for (let i = 0; i < N; i++) {
                 stack.pop();
             }
             return {
@@ -39,7 +43,7 @@ const targets: BenchmarkTargetGroup = [
                 statics: {}
             };
         },
-        name: "node/ds-test-stack-trr"
+        name: "node/ds-array-stack"
     }
 ];
 
