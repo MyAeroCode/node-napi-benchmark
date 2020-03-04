@@ -16,7 +16,7 @@ Napi::Object fileWrite(const Napi::CallbackInfo& info)
 
     //
     // write.
-    auto file = fopen("file_napi", "wb");
+    auto file = fopen((std::string("file_napi") + std::to_string(dat.ByteLength())).c_str(), "wb");
     time.push_back(std::chrono::high_resolution_clock::now());
     fwrite(dat.Data(), sizeof(uint8_t), dat.ByteLength(), file);
     time.push_back(std::chrono::high_resolution_clock::now());

@@ -11,7 +11,7 @@ const targets: BenchmarkTargetGroup = [
     },
     {
         func: function fileWrite({ dat }) {
-            writeFileSync("file_node", dat);
+            writeFileSync("file_node" + dat.length, dat);
             return {
                 ans: undefined,
                 statics: {}
@@ -35,7 +35,7 @@ function createParam(N: number): AddonParamType {
 //
 // start benchmark.
 const strcnt = [1, 2, 3].map((n) => Math.pow(1024, n));
-const repeat = 10000;
+const repeat = 1;
 strcnt.forEach((n) => {
     const param = createParam(n);
     benchmark(targets, param, repeat, `N: ${n}`);
