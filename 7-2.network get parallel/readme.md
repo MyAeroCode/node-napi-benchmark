@@ -59,9 +59,3 @@ node :
 > Measure the average of 3 times. (Number of concurrent connections: 5)
 
 ![](./resource/benchmark_kr2cn.png)
-
----
-
-`libcurl` using `std::thread` may have the lowest latency.
-
-But `axios` performs better on average.

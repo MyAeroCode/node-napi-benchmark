@@ -82,7 +82,7 @@ function createParam(url: string): AddonParamType {
 //
 // start benchmark.
 async function bootstrap() {
-    const urls = ["https://www.baidu.com/", "https://www.youku.com/"];
+    const urls = ["https://www.baidu.com/", "https://www.sogou.com/"];
     const repeat = 3;
     for (let i = 0; i < urls.length; i++) {
         const param = createParam(urls[i]);
