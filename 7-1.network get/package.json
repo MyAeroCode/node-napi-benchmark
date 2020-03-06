@@ -19,11 +19,9 @@
         "ts-node": "^8.6.2"
     },
     "dependencies": {
-        "@types/socket.io-client": "^1.4.32",
+        "axios": "^0.19.2",
         "module-alias": "^2.2.2",
         "node": "^13.8.0",
-        "req-fast": "^0.2.19",
-        "socket.io-client": "^2.3.0",
         "sync-request": "^6.1.0",
         "typescript": "^3.8.2"
     },

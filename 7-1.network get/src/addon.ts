@@ -16,8 +16,8 @@ export type AddonParamType = {
  * declare Addon Module Interface.
  */
 interface AddonModuleInterface {
-    networkGet: (param: AddonParamType) => BenchmarkTargetFunctionReturn<any>;
-    sleep: (ms: number) => void;
+    networkGet_1: (param: AddonParamType) => BenchmarkTargetFunctionReturn<string>;
+    sleepSync: (ms: number) => void;
 }
 
 /**

@@ -12,39 +12,43 @@
 
 ---
 
-### Http Get Request
+### Http Get Request Parallel
 
-**Addon :**
+Connect N connections simultaneously to a given site.
 
-use `libcurl`.
+**Library :**
 
-**Node :**
-use `sync-request`.
+c++ :
+
+1. `libcurl`
+
+node :
+
+1. `sync-request`
+2. `axios`
 
 ---
 
 ### Benchmark kr to kr
 
-> Measure the average of 100 times.
+> Measure the average of 5 times.
 
 ![](./resource/benchmark_kr2kr.png)
 
 ### Benchmark kr to jp
 
-> Measure the average of 100 times.
+> Measure the average of 5 times.
 
 ![](./resource/benchmark_kr2jp.png)
 
 ### Benchmark kr to usa
 
-> Measure the average of 100 times.
+> Measure the average of 5 times.
 
 ![](./resource/benchmark_kr2usa.png)
 
----
+### Benchmark kr to cn
 
-Most domestic (Korean) sites have a better performance with `libcurl`.
+> Measure the average of 5 times.
 
-For overseas sites, `sync-request` sometimes performs better.
-
-Consider your own situation.
+![](./resource/benchmark_kr2cn.png)

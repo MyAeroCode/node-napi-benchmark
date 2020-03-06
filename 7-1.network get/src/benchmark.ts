@@ -1,16 +1,6 @@
 import { AddonParamType, addon } from "./addon";
 
 /**
- * Returns the execution time of a given function.
- */
-export function getExecutionTime(func: (arg: void) => void): number {
-    const srt = process.hrtime();
-    func();
-    const dif = process.hrtime(srt);
-    return dif[0] * 1e9 + dif[1];
-}
-
-/**
  * Return type of benchmark target function.
  */
 export interface BenchmarkTargetFunctionReturn<T> {
@@ -24,7 +14,7 @@ export interface BenchmarkTargetFunctionReturn<T> {
  * Information of the function to perform the benchmark.
  */
 export interface BenchmarkTarget<T> {
-    func: (arg: AddonParamType) => BenchmarkTargetFunctionReturn<T>;
+    func: (arg: AddonParamType) => BenchmarkTargetFunctionReturn<T> | Promise<BenchmarkTargetFunctionReturn<T>>;
     name: string;
 }
 
@@ -36,7 +26,7 @@ export type BenchmarkTargetGroup = BenchmarkTarget<any>[];
 /**
  * Measure the execution time of the given benchmark targets.
  */
-export function benchmark<T>(targets: BenchmarkTarget<T>[], arg: AddonParamType, repeat: number, tag?: string) {
+export async function benchmark<T>(targets: BenchmarkTarget<T>[], arg: AddonParamType, repeat: number, tag?: string) {
     //
     // display tag.
     console.log("----------------------------------");
@@ -52,18 +42,26 @@ export function benchmark<T>(targets: BenchmarkTarget<T>[], arg: AddonParamType,
         let statics: any = {};
         let totalExecutionTime: number = 0;
         for (let i = 0; i < repeat; i++) {
-            addon.sleep(2500);
+            addon.sleepSync(2500);
 
             //
             // prints the progress.
-            process.stdout.write(`Test in progress... ${i} / ${repeat}                    \r`);
+            process.stdout.write(`Test in progress... ${i + 1} / ${repeat}                    \r`);
 
             //
             // execute function then save into "thisTestOutput".
             let thisTestOutput: BenchmarkTargetFunctionReturn<T> | undefined;
-            totalExecutionTime += getExecutionTime(() => {
-                thisTestOutput = target.func(arg);
-            });
+            totalExecutionTime += await (async function() {
+                const isAsync: boolean = /return __awaiter/.test(target.func.toString());
+                const srt = process.hrtime();
+                if (isAsync) {
+                    thisTestOutput = await target.func(arg);
+                } else {
+                    thisTestOutput = target.func(arg) as BenchmarkTargetFunctionReturn<T>;
+                }
+                const dif = process.hrtime(srt);
+                return dif[0] * 1e9 + dif[1];
+            })();
 
             //
             // get internal time information.

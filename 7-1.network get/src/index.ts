@@ -1,24 +1,36 @@
 import { benchmark, BenchmarkTargetGroup } from "./benchmark";
 import { addon, AddonParamType } from "./addon";
-import request from "sync-request";
+import Axios from "axios";
+import SyncRequest from "sync-request";
 
 //
 // define BenchmarkTarget.
 const targets: BenchmarkTargetGroup = [
     {
-        func: addon.networkGet,
-        name: "napi/network-get"
+        func: addon.networkGet_1,
+        name: "napi/network-get-libcurl"
     },
     {
-        func: function networkGet({ url }) {
-            const res = request("GET", url);
-            const str = Buffer.from(res.body);
+        func: async function networkGet({ url }) {
+            const res = SyncRequest("GET", url);
+            const str = res.body.toString();
             return {
                 ans: str,
                 statics: {}
             };
         },
-        name: "node/network-get"
+        name: "node/network-get-syrq"
+    },
+    {
+        func: async function networkGet({ url }) {
+            const res = await Axios.get(url);
+            const str = res.data as string;
+            return {
+                ans: str,
+                statics: {}
+            };
+        },
+        name: "node/network-get-axios"
     }
 ];
 
@@ -32,10 +44,13 @@ function createParam(url: string): AddonParamType {
 
 //
 // start benchmark.
-const strcnt = ["https://www.whitehouse.gov/", "https://en.wikipedia.org/wiki/Main_Page", "https://www.amazon.com/"];
-
-const repeat = 100;
-strcnt.forEach((url) => {
-    const param = createParam(url);
-    benchmark(targets, param, repeat, `url: ${url}`);
-});
+async function bootstrap() {
+    // cn
+    const urls = ["https://www.baidu.com/", "https://www.sogou.com/"];
+    const repeat = 5;
+    for (let i = 0; i < urls.length; i++) {
+        const param = createParam(urls[i]);
+        await benchmark(targets, param, repeat, `url: ${urls[i]}`);
+    }
+}
+bootstrap();
