@@ -33,7 +33,7 @@ function createParam(N: number): AddonParamType {
         arr.push(Math.random() > 0.5 ? 0 : 1);
     }
     return {
-        str: arr.join()
+        str: arr.join("")
     };
 }
 
