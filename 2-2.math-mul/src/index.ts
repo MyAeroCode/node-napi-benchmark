@@ -5,17 +5,16 @@ import { addon, AddonParamType } from "./addon";
 // define BenchmarkTarget.
 const targets: BenchmarkTargetGroup = [
     {
-        func: addon.mul,
+        func: (arg) => addon.mathMul(arg),
         name: "napi/math-mul"
     },
     {
-        func: function mul({ N }) {
-            let lastSqure = 0;
+        func: function({ N }) {
+            let lastSqure = 1;
             for (let i = 0; i < N; i++) {
                 lastSqure = i * i;
             }
-
-            return {
+            return { 
                 ans: lastSqure,
                 statics: {}
             };
@@ -34,7 +33,7 @@ function createParam(N: number): AddonParamType {
 
 //
 // start benchmark.
-const strcnt = [5, 6, 7].map((n) => Math.pow(10, n));
+const strcnt = [4, 5, 6].map((n) => Math.pow(10, n));
 const repeat = 10000;
 strcnt.forEach((n) => {
     const param = createParam(n);
