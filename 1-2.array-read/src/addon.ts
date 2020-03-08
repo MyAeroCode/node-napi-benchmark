@@ -5,6 +5,11 @@ import { BenchmarkTargetFunctionReturn } from "./benchmark";
  */
 require("module-alias/register");
 
+export enum SEL {
+    ARRAY = 0,
+    TYPED_ARRAY = 1
+}
+
 /**
  * define paramType of function.
  */
@@ -17,8 +22,7 @@ export type AddonParamType = {
  * declare Addon Module Interface.
  */
 interface AddonModuleInterface {
-    arrayReadArr: (param: AddonParamType) => BenchmarkTargetFunctionReturn<number>;
-    arrayReadTrr: (param: AddonParamType) => BenchmarkTargetFunctionReturn<number>;
+    arrayRead: (param: AddonParamType, sel: SEL) => BenchmarkTargetFunctionReturn;
 }
 
 /**
