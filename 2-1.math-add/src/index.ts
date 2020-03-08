@@ -6,10 +6,10 @@ import { addon, AddonParamType } from "./addon";
 const targets: BenchmarkTargetGroup = [
     {
         func: (arg) => addon.mathAdd(arg),
-        name: "napi/math-read"
+        name: "napi/math-add"
     },
     {
-        func: function({ N }) {
+        func: function ({ N }) {
             let total = 0;
             for (let i = 0; i < N; i++) {
                 total += i;
@@ -19,7 +19,7 @@ const targets: BenchmarkTargetGroup = [
                 statics: {}
             };
         },
-        name: "node/math-read"
+        name: "node/math-add"
     }
 ];
 
