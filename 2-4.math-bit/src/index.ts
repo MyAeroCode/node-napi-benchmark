@@ -5,22 +5,25 @@ import { addon, AddonParamType } from "./addon";
 // define BenchmarkTarget.
 const targets: BenchmarkTargetGroup = [
     {
-        func: addon.bit,
+        func: (arg) => addon.mathMod(arg),
         name: "napi/math-bit"
     },
     {
-        func: function bit({ N }) {
-            let result = 0;
-            for (let i = 0; i < N; i++) {
-                result |= i;
-                result &= i;
-                result <<= 1;
-                result = ~result;
-                result >>= 1;
+        func: function({ trr }) {
+            const len = trr.length;
+            const ans = new Int32Array(len);
+            for (let i = 0; i < len; i++) {
+                let v = i;
+                v |= i;
+                v &= i;
+                v <<= 1;
+                v = ~v;
+                v >>= 1;
+                ans[i] = v;
             }
 
-            return {
-                ans: result,
+            return { 
+                ans: ans,
                 statics: {}
             };
         },
@@ -31,14 +34,19 @@ const targets: BenchmarkTargetGroup = [
 //
 // define TestCase supplier.
 function createParam(N: number): AddonParamType {
+    const trr = new Int32Array(N);
+    for(let i=0; i<N; i++){
+        trr[i] = i;
+    }
+
     return {
-        N
+        trr
     };
 }
 
 //
 // start benchmark.
-const strcnt = [5, 6, 7].map((n) => Math.pow(10, n));
+const strcnt = [4, 5, 6].map((n) => Math.pow(10, n));
 const repeat = 10000;
 strcnt.forEach((n) => {
     const param = createParam(n);

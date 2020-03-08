@@ -9,14 +9,14 @@ require("module-alias/register");
  * define paramType of function.
  */
 export type AddonParamType = {
-    N: number;
+    trr : Int32Array;
 };
 
 /**
  * declare Addon Module Interface.
  */
 interface AddonModuleInterface {
-    bit: (param: AddonParamType) => BenchmarkTargetFunctionReturn<number>;
+    mathMod: (param: AddonParamType) => BenchmarkTargetFunctionReturn;
 }
 
 /**
