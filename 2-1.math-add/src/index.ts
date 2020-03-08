@@ -5,22 +5,21 @@ import { addon, AddonParamType } from "./addon";
 // define BenchmarkTarget.
 const targets: BenchmarkTargetGroup = [
     {
-        func: addon.sum,
-        name: "napi/math-sum"
+        func: (arg) => addon.mathAdd(arg),
+        name: "napi/math-read"
     },
     {
-        func: function sum({ N }) {
-            let lastDouble = 0;
+        func: function({ N }) {
+            let total = 0;
             for (let i = 0; i < N; i++) {
-                lastDouble = i + i;
+                total += i;
             }
-
             return {
-                ans: lastDouble,
+                ans: total,
                 statics: {}
             };
         },
-        name: "node/math-sum"
+        name: "node/math-read"
     }
 ];
 
@@ -34,7 +33,7 @@ function createParam(N: number): AddonParamType {
 
 //
 // start benchmark.
-const strcnt = [5, 6, 7].map((n) => Math.pow(10, n));
+const strcnt = [4, 5, 6].map((n) => Math.pow(10, n));
 const repeat = 10000;
 strcnt.forEach((n) => {
     const param = createParam(n);

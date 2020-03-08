@@ -16,7 +16,7 @@ export type AddonParamType = {
  * declare Addon Module Interface.
  */
 interface AddonModuleInterface {
-    sum: (param: AddonParamType) => BenchmarkTargetFunctionReturn<number>;
+    mathAdd: (param: AddonParamType) => BenchmarkTargetFunctionReturn;
 }
 
 /**
