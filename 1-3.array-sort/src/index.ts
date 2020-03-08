@@ -1,26 +1,32 @@
 import { benchmark, BenchmarkTargetGroup } from "./benchmark";
-import { addon, AddonParamType } from "./addon";
+import { addon, AddonParamType, SEL } from "./addon";
 
 //
 // define BenchmarkTarget.
 const targets: BenchmarkTargetGroup = [
     {
-        func: addon.arraySortTrr,
+        func: (arg) => addon.arraySort(arg, SEL.ARRAY),
+        name: "napi/array-sort-arr"
+    },
+    {
+        func: (arg) => addon.arraySort(arg, SEL.TYPED_ARRAY),
         name: "addon/array-sort-trr"
     },
     {
-        func: function arraySortArr({ arr }) {
+        func: function({ arr }) {
+            arr.sort();
             return {
-                ans: arr.sort(),
+                ans: undefined,
                 statics: {}
             };
         },
         name: "node/array-sort-arr"
     },
     {
-        func: function arraySortTrr({ trr }) {
+        func: function({ trr }) {
+            trr.sort();
             return {
-                ans: trr.sort(),
+                ans: undefined,
                 statics: {}
             };
         },
@@ -31,10 +37,10 @@ const targets: BenchmarkTargetGroup = [
 //
 // define TestCase supplier.
 function createParam(N: number): AddonParamType {
-    const arr = [];
-    const trr = new Int32Array(N);
+    const arr: number[] = [];
+    const trr: Int32Array = new Int32Array(N);
     for (let i = 0; i < N; i++) {
-        const num = i;
+        const num = Math.floor(Math.random() * 1000000);
         arr[i] = num;
         trr[i] = num;
     }
@@ -47,7 +53,7 @@ function createParam(N: number): AddonParamType {
 
 //
 // start benchmark.
-const strcnt = [4, 5, 6].map((n) => Math.pow(10, n));
+const strcnt = [2, 3, 4].map((n) => Math.pow(10, n));
 const repeat = 10000;
 strcnt.forEach((n) => {
     const param = createParam(n);
