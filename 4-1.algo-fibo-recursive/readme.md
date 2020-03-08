@@ -1,20 +1,4 @@
-### How to build it?
-
-**pre-build**
-
-1. `npm install -g windows-build-tools` in admin mode.
-
-**build**
-
-1. `npm install`
-2. `npm run build`
-3. `npm run start`
-
----
-
-### Algolithm Recursive fibo
-
-**Common :**
+### Algo fibo recursive
 
 ```ts
 function fibo(n: number): number {
@@ -25,10 +9,12 @@ function fibo(n: number): number {
 }
 ```
 
----
-
 ### Benchmark
 
 > Measure the average of 10,000 times.
 
 ![](./resource/benchmark.png)
+
+---
+
+The `addon`'s performance is significantly better.

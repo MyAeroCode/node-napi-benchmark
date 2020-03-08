@@ -9,19 +9,17 @@ require("module-alias/register");
  * define paramType of function.
  */
 export type AddonParamType = {
-    N: number;
+    N : number;
 };
 
 /**
  * declare Addon Module Interface.
  */
 interface AddonModuleInterface {
-    fibo: (param: AddonParamType) => BenchmarkTargetFunctionReturn<undefined>;
+    mathMod: (param: AddonParamType) => BenchmarkTargetFunctionReturn;
 }
 
 /**
  * export addon.
  */
-export const addon: AddonModuleInterface = require(process.argv.indexOf("--addon-debug") >= 0
-    ? "@addon-debug/my-addon.node"
-    : "@addon-release/my-addon.node");
+export const addon: AddonModuleInterface = require("@addon/my-addon.node");
