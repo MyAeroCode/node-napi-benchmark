@@ -5,36 +5,40 @@ import { addon, AddonParamType } from "./addon";
 // define BenchmarkTarget.
 const targets: BenchmarkTargetGroup = [
     {
-        func: addon.mod,
-        name: "napi/math-mul"
+        func: (arg) => addon.mathMod(arg),
+        name: "napi/math-mod"
     },
     {
-        func: function mod({ N }) {
-            let lastMod = 0;
-            for (let i = 0; i < N; i++) {
-                lastMod = i % i;
+        func: function({ trr }) {
+            const len = trr.length;
+            const ans = new Int32Array(len);
+            for(let i=0; i<len; i++){
+                ans[i] = trr[i] % 7;
             }
-
-            return {
-                ans: lastMod,
+            return { 
+                ans: ans,
                 statics: {}
             };
         },
-        name: "node/math-mul"
+        name: "node/math-mod"
     }
 ];
 
 //
 // define TestCase supplier.
 function createParam(N: number): AddonParamType {
+    const trr = new Int32Array(N);
+    for(let i=0; i<N; i++){
+        trr[i] = Math.floor(Math.random() * 10000);
+    }
     return {
-        N
+        trr
     };
 }
 
 //
 // start benchmark.
-const strcnt = [5, 6, 7].map((n) => Math.pow(10, n));
+const strcnt = [4, 5, 6].map((n) => Math.pow(10, n));
 const repeat = 10000;
 strcnt.forEach((n) => {
     const param = createParam(n);
