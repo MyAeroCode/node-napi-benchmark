@@ -1,19 +1,19 @@
 import { benchmark, BenchmarkTargetGroup } from "./benchmark";
-import { addon, AddonParamType } from "./addon";
+import { addon, AddonParamType, SEL } from "./addon";
 
 //
 // define BenchmarkTarget.
 const targets: BenchmarkTargetGroup = [
     {
-        func: addon.arrayWriteArr,
+        func: (arg) => addon.arrayWrite(arg, SEL.ARRAY),
         name: "napi/array-write-arr"
     },
     {
-        func: addon.arrayWriteTrr,
+        func: (arg) => addon.arrayWrite(arg, SEL.TYPED_ARRAY),
         name: "addon/array-write-trr"
     },
     {
-        func: function arrayWriteArr({ end }) {
+        func: function({ end }) {
             const array: number[] = [];
             for (let i = 0; i < end; i++) {
                 array[i] = i;
@@ -27,7 +27,7 @@ const targets: BenchmarkTargetGroup = [
         name: "node/array-write-arr"
     },
     {
-        func: function arrayWriteTrr({ end }) {
+        func: function({ end }) {
             const array = new Int32Array(end);
             for (let i = 0; i < end; i++) {
                 array[i] = i;
@@ -52,7 +52,7 @@ function createParam(N: number): AddonParamType {
 
 //
 // start benchmark.
-const strcnt = [4, 5, 6].map((n) => Math.pow(10, n));
+const strcnt = [2, 3, 4].map((n) => Math.pow(10, n));
 const repeat = 10000;
 strcnt.forEach((n) => {
     const param = createParam(n);
