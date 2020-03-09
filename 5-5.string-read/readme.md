@@ -49,3 +49,25 @@ char* c_str = (char*) arg.trr.As<Napi::Uint8Array>.Data();
 Only the time required for `casting to std::string or char*` was measured.
 
 ![](./resource/benchmark.png)
+
+But we have to think about the cost of converting a string to a buffer.
+
+```ts
+const str: string = "Hello, World!";
+const buf: buffer = Buffer.from(str);
+
+//
+// Uint8Array is interface.
+// The buffer implements Uint8Array.
+const trr: Uint8Array = buf;
+```
+
+This requires an additional cost.
+
+> Measure the average of 10,000 times.
+
+-   N === 1e4 ) 80 us
+-   N === 1e5 ) 1,000 us
+-   N === 1e6 ) 12,220 us
+
+Therefore, it is effective only when the same string is reused multiple times.
