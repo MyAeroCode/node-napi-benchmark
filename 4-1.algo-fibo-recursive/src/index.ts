@@ -9,15 +9,15 @@ const targets: BenchmarkTargetGroup = [
         name: "napi/algo-fibo-recursive"
     },
     {
-        func: function({ N }) {
-            function fibo(n : number) : number{
-                if(n === 1) return 0;
-                if(n === 2) return 1;
-                if(n === 3) return 1;
-                return fibo(n-1) + fibo(n-2);
+        func: function ({ N }) {
+            function fibo(n: number): number {
+                if (n === 0) return 0;
+                if (n === 1) return 1;
+                if (n === 2) return 1;
+                return fibo(n - 1) + fibo(n - 2);
             }
 
-            return { 
+            return {
                 ans: fibo(N),
                 statics: {}
             };
@@ -29,6 +29,10 @@ const targets: BenchmarkTargetGroup = [
 //
 // define TestCase supplier.
 function createParam(N: number): AddonParamType {
+    if (N < 0 || 75 < N) {
+        throw new Error(`N must be a positive integer less than or equal to 75.`);
+    }
+
     return {
         N
     };
