@@ -5,11 +5,11 @@ import { addon, AddonParamType } from "./addon";
 // define BenchmarkTarget.
 const targets: BenchmarkTargetGroup = [
     {
-        func: (arg) => addon.stringRead(arg),
+        func: (arg) => addon.stringReadEachChar(arg),
         name: "napi/string-read"
     },
     {
-        func: function({ str }) {
+        func: function ({ str }) {
             const len = str.length;
             let charSum = 0;
             for (let i = 0; i < len; i++) {

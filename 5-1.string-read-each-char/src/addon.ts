@@ -9,14 +9,14 @@ require("module-alias/register");
  * define paramType of function.
  */
 export type AddonParamType = {
-    str : string;
+    str: string;
 };
 
 /**
  * declare Addon Module Interface.
  */
 interface AddonModuleInterface {
-    stringRead: (param: AddonParamType) => BenchmarkTargetFunctionReturn;
+    stringReadEachChar: (param: AddonParamType) => BenchmarkTargetFunctionReturn;
 }
 
 /**

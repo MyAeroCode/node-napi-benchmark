@@ -1,4 +1,4 @@
-### Algo fibo recursive
+### String - read each char
 
 **c++ :**
 

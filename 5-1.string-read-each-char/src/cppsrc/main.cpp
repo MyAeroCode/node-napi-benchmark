@@ -11,7 +11,7 @@ inline size_t work(const std::string& str){
 }
 
 
-Napi::Object stringRead(const Napi::CallbackInfo& info)
+Napi::Object stringReadEachChar(const Napi::CallbackInfo& info)
 {
     std::vector<std::chrono::_V2::system_clock::time_point> time;
 
@@ -52,7 +52,7 @@ Napi::Object stringRead(const Napi::CallbackInfo& info)
 
 Napi::Object InitAll(Napi::Env env, Napi::Object exports)
 {
-    exports.Set("stringRead", Napi::Function::New(env, stringRead));
+    exports.Set("stringReadEachChar", Napi::Function::New(env, stringReadEachChar));
     return exports;
 }
 
