@@ -7,20 +7,11 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "debug node",
+            "name": "Launch Program",
             "skipFiles": ["<node_internals>/**"],
             "program": "${workspaceFolder}\\src\\index.ts",
             "outFiles": ["${workspaceFolder}/**/*.js"],
-            "console": "integratedTerminal"
-            // "preLaunchTask": "npm: build"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "debug addon",
-            "program": "node",
-            "args": ["${workspaceFolder}\\out\\index.js", "--addon-debug"]
-            // "preLaunchTask": "npm: build-debug"
+            "console": "internalConsole"
         }
     ]
 }

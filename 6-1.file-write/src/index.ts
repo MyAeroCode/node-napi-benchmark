@@ -6,12 +6,14 @@ import { writeFileSync } from "fs";
 // define BenchmarkTarget.
 const targets: BenchmarkTargetGroup = [
     {
-        func: addon.fileWrite,
+        func: (arg) => addon.fileWrite(arg),
         name: "napi/file-write"
     },
     {
-        func: function fileWrite({ dat }) {
-            writeFileSync("file_node" + dat.length, dat);
+        func: function({ dat }) {
+            const filename = "node" + dat.length;
+            writeFileSync(filename, dat);
+            writeFileSync(filename, new Uint8Array(0));
             return {
                 ans: undefined,
                 statics: {}
@@ -24,18 +26,17 @@ const targets: BenchmarkTargetGroup = [
 //
 // define TestCase supplier.
 function createParam(N: number): AddonParamType {
-    const buf = new Uint8Array(N);
-    const dot = ".".charCodeAt(0);
-    buf.fill(dot);
+    const dat = new Uint8Array(N);
+    dat.fill(" ".charCodeAt(0));
     return {
-        dat: buf
+        dat
     };
 }
 
 //
 // start benchmark.
-const strcnt = [1, 2, 3].map((n) => Math.pow(1024, n));
-const repeat = 1;
+const strcnt = [3, 6, 9].map((n) => Math.pow(10, n));
+const repeat = 1000;
 strcnt.forEach((n) => {
     const param = createParam(n);
     benchmark(targets, param, repeat, `N: ${n}`);
