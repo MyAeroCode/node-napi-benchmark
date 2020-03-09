@@ -16,7 +16,7 @@ export type AddonParamType = {
  * declare Addon Module Interface.
  */
 interface AddonModuleInterface {
-    stringWrite: (param: AddonParamType) => BenchmarkTargetFunctionReturn;
+    stringWriteEachChar: (param: AddonParamType) => BenchmarkTargetFunctionReturn;
 }
 
 /**

@@ -9,7 +9,7 @@ inline void work(std::string& str){
 }
 
 
-Napi::Object stringWrite(const Napi::CallbackInfo& info)
+Napi::Object stringWriteEachChar(const Napi::CallbackInfo& info)
 {
     std::vector<std::chrono::_V2::system_clock::time_point> time;
 
@@ -50,7 +50,7 @@ Napi::Object stringWrite(const Napi::CallbackInfo& info)
 
 Napi::Object InitAll(Napi::Env env, Napi::Object exports)
 {
-    exports.Set("stringWrite", Napi::Function::New(env, stringWrite));
+    exports.Set("stringWriteEachChar", Napi::Function::New(env, stringWriteEachChar));
     return exports;
 }
 

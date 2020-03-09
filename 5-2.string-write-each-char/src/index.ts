@@ -5,7 +5,7 @@ import { addon, AddonParamType } from "./addon";
 // define BenchmarkTarget.
 const targets: BenchmarkTargetGroup = [
     {
-        func: (arg) => addon.stringWrite(arg),
+        func: (arg) => addon.stringWriteEachChar(arg),
         name: "napi/string-write"
     },
     {
