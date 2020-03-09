@@ -16,12 +16,10 @@ export type AddonParamType = {
  * declare Addon Module Interface.
  */
 interface AddonModuleInterface {
-    fileRead: (param: AddonParamType) => BenchmarkTargetFunctionReturn<Uint8Array>;
+    fileRead: (param: AddonParamType) => BenchmarkTargetFunctionReturn;
 }
 
 /**
  * export addon.
  */
-export const addon: AddonModuleInterface = require(process.argv.indexOf("--addon-debug") >= 0
-    ? "@addon-debug/my-addon.node"
-    : "@addon-release/my-addon.node");
+export const addon: AddonModuleInterface = require("@addon/my-addon.node");

@@ -13,8 +13,8 @@ export function getExecutionTime(func: (arg: void) => void): number {
 /**
  * Return type of benchmark target function.
  */
-export interface BenchmarkTargetFunctionReturn<T> {
-    ans: T;
+export interface BenchmarkTargetFunctionReturn {
+    ans: any;
     statics: {
         [key: string]: number;
     };
@@ -23,11 +23,11 @@ export interface BenchmarkTargetFunctionReturn<T> {
 /**
  * Information of the function to perform the benchmark.
  */
-export class BenchmarkTarget<T> {
-    func: (arg: AddonParamType) => BenchmarkTargetFunctionReturn<T>;
+export class BenchmarkTarget {
+    func: (arg: AddonParamType) => BenchmarkTargetFunctionReturn;
     name: string;
 
-    constructor(func: (arg: AddonParamType) => BenchmarkTargetFunctionReturn<T>, name: string) {
+    constructor(func: (arg: AddonParamType) => BenchmarkTargetFunctionReturn, name: string) {
         this.func = func;
         this.name = name;
     }
@@ -36,20 +36,16 @@ export class BenchmarkTarget<T> {
 /**
  * Define group of benchmark target.
  */
-export type BenchmarkTargetGroup = BenchmarkTarget<any>[];
+export type BenchmarkTargetGroup = BenchmarkTarget[];
 
 /**
  * Measure the execution time of the given benchmark targets.
  */
-export function benchmark<T>(targets: BenchmarkTarget<T>[], arg: AddonParamType, repeat: number, tag?: string): void {
+export function benchmark<T>(targets: BenchmarkTarget[], arg: AddonParamType, repeat: number, tag?: string): void {
     //
     // display tag.
     console.log("----------------------------------");
     console.group(tag ? `* ${tag}` : "");
-
-    //
-    // store answer.
-    let ans;
 
     //
     // start benchmark.
@@ -63,7 +59,7 @@ export function benchmark<T>(targets: BenchmarkTarget<T>[], arg: AddonParamType,
 
             //
             // execute function then save into "thisTestOutput".
-            let thisTestOutput: BenchmarkTargetFunctionReturn<T> | undefined;
+            let thisTestOutput: BenchmarkTargetFunctionReturn | undefined;
             totalExecutionTime += getExecutionTime(() => {
                 thisTestOutput = target.func(arg);
             });
@@ -75,12 +71,7 @@ export function benchmark<T>(targets: BenchmarkTarget<T>[], arg: AddonParamType,
                 statics[key] += thisTestOutput?.statics[key];
             }
 
-            //
-            // save answer.
-            // if (ans === undefined) ans = thisTestOutput!!.ans;
-            // else if (!(ans as any).equals(thisTestOutput!!.ans)) {
-            //     throw new Error(`Answer mismatch : ${ans} , ${thisTestOutput!!.ans}`);
-            // }
+            if (repeat === 1) console.log(thisTestOutput?.ans + "                  ");
         }
 
         //
@@ -98,7 +89,6 @@ export function benchmark<T>(targets: BenchmarkTarget<T>[], arg: AddonParamType,
         if (subCnt !== 0) {
             console.log(`> etc : ${etc} us`);
         }
-        // console.log(`ans : ${ans}`);
         console.groupEnd();
     }
     console.groupEnd();
