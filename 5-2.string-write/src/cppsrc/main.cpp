@@ -1,31 +1,48 @@
 #include <chrono>
 #include <napi.h>
-#include <iostream>
+#include <stdio.h>
+
+inline void work(std::string& str){
+    for(char &ch: str){
+        ch = (ch == '0' ? '1' : '0'); 
+    }
+}
+
 
 Napi::Object stringWrite(const Napi::CallbackInfo& info)
 {
-    std::vector<std::chrono::steady_clock::time_point> time;
+    std::vector<std::chrono::_V2::system_clock::time_point> time;
 
-    //
-    // get argument.
     auto env = info.Env();
-    auto obj = info[0].As<Napi::Object>();
+
+    /*
+        info[0] : {
+            str : string;
+        }
+    */
+    auto obj = info[0].ToObject();
     auto str = obj.Get("str").ToString().Utf8Value();
-
-    //
-    // write.
+    
+    /*
+        calc n-th fibo.
+    */
     time.push_back(std::chrono::high_resolution_clock::now());
-    uint64_t sum = 0;
-    for (char& ch : str) {
-        ch = (ch == '0' ? '1' : '0');
-    }
+    work(str);
     time.push_back(std::chrono::high_resolution_clock::now());
 
-    //
-    // return null.
+    /*
+        create information to return.
+
+        ans : {
+            ans : any;
+            statics : {
+                [key: string] : number;
+            }
+        }
+    */
     auto ans = Napi::Object::New(env);
     auto statics = Napi::Object::New(env);
-    ans["ans"] = str;
+    ans["ans"] = Napi::String::New(env, str);
     ans["statics"] = statics;
     statics["calc"] = std::chrono::duration_cast<std::chrono::nanoseconds>(time[1] - time[0]).count();
     return ans;
