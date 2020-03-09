@@ -1,5 +1,3 @@
-import { BenchmarkTargetFunctionReturn } from "./benchmark";
-
 /**
  * for require alias.
  */
@@ -16,8 +14,15 @@ export type AddonParamType = {
  * declare Addon Module Interface.
  */
 interface AddonModuleInterface {
-    testStack1: (param: AddonParamType) => BenchmarkTargetFunctionReturn<undefined>;
-    testStack2: (param: AddonParamType) => BenchmarkTargetFunctionReturn<undefined>;
+    AddonStack: {
+        new (size: number): {
+            push: (val: number) => boolean;
+            pop: () => boolean;
+            top: () => number | undefined;
+            size: () => number;
+            empty: () => boolean;
+        };
+    };
 }
 
 /**
