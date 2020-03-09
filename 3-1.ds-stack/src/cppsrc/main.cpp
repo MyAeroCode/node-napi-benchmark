@@ -10,6 +10,7 @@ class AddonStack : public Napi::ObjectWrap<AddonStack> {
 
         //
         // push val into stack.
+        // returns false if no more elements can be inserted.
         Napi::Value push(const Napi::CallbackInfo &info){
             auto env = info.Env();
             auto val = info[0].ToNumber().Int32Value();
@@ -36,7 +37,7 @@ class AddonStack : public Napi::ObjectWrap<AddonStack> {
 
         //
         // return top value of stack.
-        // return false if the stack is empty.
+        // return undefined if the stack is empty.
         Napi::Value top(const Napi::CallbackInfo &info){
             auto env = info.Env();
             if(idx != 0) {
