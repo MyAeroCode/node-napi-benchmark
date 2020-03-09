@@ -5,14 +5,14 @@ import { addon, AddonParamType } from "./addon";
 // define BenchmarkTarget.
 const targets: BenchmarkTargetGroup = [
     {
-        func: addon.stringCreate,
+        func: (arg) => addon.stringCreate(arg),
         name: "napi/string-create"
     },
     {
         func: function({ N }) {
             const arr: string[] = [];
             for (let i = 0; i < N; i++) {
-                arr.push(String(i));
+                arr[i] = String(i);
             }
             return {
                 ans: arr,
@@ -33,7 +33,7 @@ function createParam(N: number): AddonParamType {
 
 //
 // start benchmark.
-const strcnt = [1, 2, 3].map((v) => Math.pow(10, v));
+const strcnt = [2, 3, 4].map((n) => Math.pow(10, n));
 const repeat = 10000;
 strcnt.forEach((n) => {
     const param = createParam(n);
