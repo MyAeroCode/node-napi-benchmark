@@ -98,4 +98,4 @@ $ npm run start
 
 ### Related Links
 
-- [NAPI Document](https://github.com/nodejs/node-addon-api/tree/master/doc){:target="_blank"}
+- <a href="https://github.com/nodejs/node-addon-api/tree/master/doc" target="_blank">NAPI Document</a>
