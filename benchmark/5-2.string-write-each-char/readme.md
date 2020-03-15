@@ -32,6 +32,16 @@ for (let i = 0; i < len; i++) {
 str = arr.join();
 ```
 
+```ts
+const buf = Buffer.from(str);
+const ch0 = "0".charCodeAt(0);
+const ch1 = "1".charCodeAt(0);
+for(let i=0; i<buf.length; i++){
+    buf[i] = (buf[i] === ch0) ? ch1 : ch0;
+}
+buf.toString();
+```
+
 ### Benchmark
 
 > Measure the average of 10,000 times.
@@ -42,4 +52,4 @@ str = arr.join();
 
 ### Conclusion
 
-Because of the V8 engine string feature, `NODE` are **_not suitable_** for modifying strings.
+If you need to perform each character-wise operation, it is better to convert it to `Buffer` before proceeding.

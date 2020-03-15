@@ -9,7 +9,7 @@ const targets: BenchmarkTargetGroup = [
         name: "napi/string-write"
     },
     {
-        func: function({ str }) {
+        func: function ({ str }) {
             const arr: string[] = [];
             const len = str.length;
             for (let i = 0; i < len; i++) {
@@ -22,6 +22,21 @@ const targets: BenchmarkTargetGroup = [
             };
         },
         name: "node/string-write"
+    },
+    {
+        func: function ({ str }) {
+            const buf = Buffer.from(str);
+            const zero = "0".charCodeAt(0);
+            const one = "1".charCodeAt(0);
+            for (let i = 0; i < buf.length; i++) {
+                buf[i] = buf[i] == zero ? one : zero;
+            }
+            return {
+                ans: buf.toString(),
+                statics: {}
+            };
+        },
+        name: "node/buffer-write"
     }
 ];
 
