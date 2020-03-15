@@ -1,7 +1,4 @@
-#include <chrono>
 #include <napi.h>
-#include <sstream>
-#include <stdio.h>
 
 ///
 /// Modify memory of TypedArray.
