@@ -2,24 +2,23 @@
 
 This project measures performance differences between `NAPI` and `NODE.JS` implementations.
 
-I use the `centos8 container`  of `docker` to proceed in the same environment.
+I use the `centos8 container` of `docker` to proceed in the same environment.
 
 ---
 
 ### Env
 
-Hardware : 
+Hardware :
 
 - **CPU** : AMD® Ryzen 5 2400g with radeon vega graphics × 8
 - **RAM** : 16 GB
 
-
 Operating System :
 
-- **HOST**   : centos 8 (x64)
+- **HOST** : centos 8 (x64)
 - **Docker Container** : centos 8
 
-Node version : 
+Node version :
 
 - **NODE** : 10.19.0
 - **NAPI** : 5
@@ -41,8 +40,9 @@ There are two ways.
 2. Download the pre-built image.
 
 ```shell
-$ docker pull myaerocode/centos-node-napi:8 
+$ docker pull myaerocode/centos-node-napi:8
 ```
+
 3. Run container using image.
 
 ```shell
@@ -75,10 +75,6 @@ Node Packages (Globally) :
 ### How to execute it?
 
 1. Clone this repository.
-
-```shell
-$ git clone https://github.com/MyAeroCode/node-napi-benchmark
-```
 
 2. Enter the workspace you want.
 
