@@ -3,13 +3,13 @@
 #include <sstream>
 #include <stdio.h>
 
-inline void work(const Napi::Env& env, Napi::Value& out, const Napi::Value& in){
-    auto N = in.ToNumber().Int64Value();
-    int64_t lastSqure = 1;
+inline void work(const Napi::Env& env, Napi::Value& out, const Napi::Object& in){
+    auto N = in.Get("N").ToNumber().Int64Value();
+    auto typedArray = in.Get("typedArray").As<Napi::TypedArrayOf<int32_t>>().Data();
     for(int64_t i=0; i<N; i++){
-        lastSqure = i*i;
+        typedArray[i] = i * 1.5;
     }
-    out = Napi::Number::New(env, lastSqure);
+    out = env.Undefined();
 }
 
 
@@ -31,7 +31,7 @@ Napi::Object mathMul(const Napi::CallbackInfo& info)
     */
     time.push_back(std::chrono::high_resolution_clock::now());
     Napi::Value val = env.Undefined();
-    work(env, val, obj.Get("N"));
+    work(env, val, obj);
     time.push_back(std::chrono::high_resolution_clock::now());
 
     /*

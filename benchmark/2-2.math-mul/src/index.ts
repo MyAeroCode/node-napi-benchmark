@@ -9,13 +9,12 @@ const targets: BenchmarkTargetGroup = [
         name: "napi/math-mul"
     },
     {
-        func: function({ N }) {
-            let lastSqure = 1;
+        func: function({ N, typedArray }) {
             for (let i = 0; i < N; i++) {
-                lastSqure = i * i;
+                typedArray[i] = i * 1.5;
             }
-            return { 
-                ans: lastSqure,
+            return {
+                ans: undefined,
                 statics: {}
             };
         },
@@ -27,7 +26,8 @@ const targets: BenchmarkTargetGroup = [
 // define TestCase supplier.
 function createParam(N: number): AddonParamType {
     return {
-        N
+        N,
+        typedArray: new Int32Array(N)
     };
 }
 

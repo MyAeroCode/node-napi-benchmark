@@ -10,6 +10,7 @@ require("module-alias/register");
  */
 export type AddonParamType = {
     N: number;
+    typedArray: Int32Array;
 };
 
 /**
