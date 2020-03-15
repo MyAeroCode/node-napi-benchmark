@@ -11,7 +11,7 @@ function fibo(n: number): number {
 
 ### Benchmark
 
-> Measure the average of 10,000 times.
+> Measure the average of 100,000 times.
 
 ![](./resource/benchmark.png)
 
