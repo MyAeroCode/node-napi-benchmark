@@ -1,9 +1,9 @@
 ### Math mul
 
 ```ts
-let lastSqure = 0;
+let typedArray = new Int32Array(N);
 for (let i = 0; i < N; i++) {
-    lastSqure = i * i;
+    typedArray[i] = i * 1.5;
 }
 ```
 
